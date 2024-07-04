@@ -1,0 +1,32 @@
+{
+   "Chase": {
+      "bob": [
+         {
+            "Password": "123",
+            "Name": "Kat Williams",
+            "Age": 38
+         },
+         {
+            "0": {
+               "Name": "Kat Williams",
+               "Ammount": 2000
+            }
+         }
+      ]
+   },
+   "Citigroup": {
+      "bob": [
+         {
+            "Password": "123",
+            "Name": "Oluwatobi Olukunle",
+            "Age": 40
+         },
+         {
+            "0": {
+               "Name": "Oluwatobi Olukunle",
+               "Ammount": 500.0
+            }
+         }
+      ]
+   }
+}
