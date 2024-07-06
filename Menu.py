@@ -4,8 +4,8 @@ from Bank import Bank
 import FileHandler as FH
 
 class Menu:
-    def __init__(self, data: dict = dict(), banks: list = list()) :
-        self.data = FH.load_file()
+    def __init__(self, data: dict = FH.load_file()) :
+        self.data = data
         self.banks = self.get_bank_record()
     
     def save(self) -> None:
@@ -34,14 +34,18 @@ class Menu:
             if selection.isdigit():
                 selection: int = int(selection)
                 if selection in range(len(banks)):
+                    print()
                     self.bank_menu(banks[selection])
                 else:
                     print(f"{selection} is not a choice")
+                    print()
                     continue
             else:
                 if selection != "E":
                     print("Wrong input please try again")
+                    print()
                 else:
+                    FH.save_banks(self.banks, self.data)
                     self.save()
                     exit()
                 
@@ -51,29 +55,35 @@ class Menu:
             selection: str = input("[L]ogin\n[C]reate Account\n[E]xit\n[G]0 Back\n")
             if selection not in "GELC" or len(selection) != 1:
                 print("Wrong input please try again")
+                print()
                 continue
             match selection:
                 case "G":
-                    self.banks_menu()
-                case "E": 
+                    print()
+                    return
+                case "E":
+                    FH.save_bank(bank, self.data) 
                     self.save()  
                     exit()
-                case "L":    
+                case "L":
+                    print()    
                     username: str = input("Username: ")
                     passowrd: str = input("Password: ")
                     account: Account = bank.validate_login(username, passowrd)
                     if account is not None:
+                        print()
                         self.account_Menu(account, bank)
                     else:
-                        print("Wrong Username Or Password")
+                        print("Wrong Username Or Password\n")
                         continue
                 case "C":
+                    print()
                     while True:
                         print("Creating Account:") 
                         while True:   
                             username: str = input("Username: ")
                             if bank.duplicate_username(username):
-                                print("Duplicate Username")
+                                print("Duplicate Username\n")
                                 continue
                             else:
                                 break
@@ -81,11 +91,11 @@ class Menu:
                         while True:
                             name: str = input("Name: ")
                             if any(i.isdigit() for i in name):
-                                print("Please Only Input in Alphabet")
+                                print("Please Only Input in Alphabet\n")
                                 continue
                             else:
                                 if len(name.split()) > 2 or len(name.split()) < 2:
-                                    print("Please Only Input A First Name And Last Name")
+                                    print("Please Only Input A First Name And Last Name\n")
                                     continue
                                 else:
                                     break
@@ -96,51 +106,61 @@ class Menu:
                                 if age >= 18:
                                     break
                                 else:
-                                    print("Must be older than 18")  
-                                    self.bank_menu(bank)
+                                    print("Must be older than 18\n")
+                                    print()  
+                                    break
                             else:
-                                print("Please Only Input Digit")
+                                print("Please Only Input Digit\n")
+                                print()
                                 continue
-                        if int(age )< 18:
+                        if int(age) < 18:
                             break
                         bank.add_account(username,passowrd,name,age)
                         account = bank.validate_login(username,passowrd)
                         if account is not None:
-                            FH.save_account(account, bank.name, self.data)
+                            print()
                             self.account_Menu(account, bank)
+                            break
                         else:
-                            print("Mistake was made")
+                            print("Mistake was made\n")
                             continue
                     
     def account_Menu(self, account: Account, bank: Bank) -> None:
         while True:
             print(f"{account.username} Account:")
-            selection: str = input("[G]o Back\n[B]ank Accounts\n[C]reate Bank Account\n[E]exit\n")
-            if selection not in "EGCB" or len(selection) != 1:
-                print("Wrong input please try again")
+            selection: str = input("[G]o Back\n[B]ank Accounts\n[C]reate Bank Account\n[P]rofile\n[E]exit\n")
+            if selection not in "EGCBP" or len(selection) != 1:
+                print("Wrong input please try again\n")
                 continue
             match selection:
                 case "E":
+                    FH.save_account(account,bank.name,self.data)
                     self.save()   
                     exit()
                 case "G":
-                    self.bank_menu(bank)
-                    break
+                    print()
+                    return
+                case "P":
+                    print()
+                    self.profile_menu(account,bank.name)
+                    continue
                 case "C":
+                    print()
                     while True:
                         ammount: str = input("How Much Are You Opening The Bank Account With\n")
                         if ammount.isdigit():
                             ammount: float = float(ammount)
                             serial: int = bank.generate_account_id()
                             bank_account = account.add_bank_account(serial, ammount)
-                            FH.save_bank_account(bank_account,account.username,bank.name,self.data)
                             break
                         else:
-                            print("Only Input Digits Please")
+                            print("Only Input Digits Please\n")
                             continue
+                    continue
                 case "B":
+                    print()
                     bank_accounts = account.bank_accounts
-                    if len(bank_accounts) > 0:
+                    if len(bank_accounts) > 1:
                         while True:
                             print("Which Bank Account Do You Want Choose:\n")
                             for num in range(len(bank_accounts)):
@@ -151,52 +171,133 @@ class Menu:
                             if choice.isdigit():
                                 choice: int = int(choice)
                                 if choice in range(len(bank_accounts)):
-                                    self.bank_account_holder_menu(bank_accounts[choice], account, bank) 
+                                    print()
+                                    self.bank_account_holder_menu(bank_accounts[choice], account) 
                                     break                      
                                 else:
-                                    print(f"{choice} Is Not Among The Choice, Try Again")
+                                    print(f"{choice} Is Not Among The Choice, Try Again\n")
                                     continue
                             else:
-                                print("Only Input Digits Please")
+                                print("Only Input Digits Please\n")
                                 continue
-                    elif len(bank_accounts)== 1:
+                    elif len(bank_accounts) == 1:
                         bank_account: BankAccount = bank_accounts[0]
-                        self.bank_account_holder_menu(bank_account, account, bank)
-                        break
+                        print()
+                        self.bank_account_holder_menu(bank_account, account)
                     else:
-                        print("You Don't Have A Bank Account, Please Create One")
-                    
-
-    def bank_account_holder_menu(self, bank_account: BankAccount, account: Account, bank: Bank) -> None:
+                        print("You Don't Have A Bank Account, Please Create One\n")
+    
+    def profile_menu(self, account: Account, bank_name: str):
+        while True:
+            print(account)
+            print()
+            selection: str = input("[U]pdate\n[N]ew Password\n[G]o Back\n[E]xit\n")
+            if selection not in "UNGE" or len(selection) != 1:
+                print("Wrong input please try again")
+                continue
+            match selection:
+                case "U":
+                    print()
+                    self.update_menu(account)
+                    continue
+                case "N":
+                    print()
+                    while True:
+                        old_password: str = input("Enter Old Password\n")
+                        print()
+                        password: str = input("Enter New Password\n")
+                        print()
+                        status: int = account.change_password(old_password, password)
+                        if status == 0:
+                            print("Password Sucessfully Changed\n")
+                            break
+                        else:
+                            if status == -1:
+                                print("Wrong Old Password\n")
+                                continue
+                            if status == -2:
+                                print("New Password Same as The Old Password\n")
+                                continue
+                    continue
+                case "G":
+                    print()
+                    return
+                case "E":
+                    FH.save_account(account,bank_name,self.data)
+                    self.save()   
+                    exit()
+    
+    def update_menu(self, account: Account):
+         while True:
+            print("What Would You Like Change: ")
+            selection: str = input("[N]ame\n[A]age\n[G]o Back\n")
+            if selection not in "NAG" or len(selection) != 1:
+                print("Wrong input please try again")
+                continue
+            match selection:
+                case "N":
+                    print()
+                    while True:
+                        name: str = input("New Name: ")
+                        if any(i.isdigit() for i in name):
+                            print("Please Only Input in Alphabet\n")
+                            continue
+                        else:
+                            if len(name.split()) > 2 or len(name.split()) < 2:
+                                print("Please Only Input A First Name And Last Name\n")
+                                continue
+                            else:
+                                account.change_name(name)
+                                print()
+                                return 
+                case "A":
+                    print()
+                    while True:
+                        age: str = input("New Age: ")
+                        print()
+                        if age.isdigit():
+                            if account.change_age(int(age)):
+                                print("Age Changed\n")
+                                return
+                            else:
+                                print("Must Input A Value Over 17\n")
+                                continue
+                        else:
+                            print("Only Input In Digit")
+                            continue
+                case "G":
+                    print()
+                    return
+    
+    def bank_account_holder_menu(self, bank_account: BankAccount, account: Account) -> None:
         while True:
             print(f"Welcome {bank_account.account_holder_name} what would you like to "
-                + "do today\n[W]ithdrawal\n[D]eposit\n[B]alance\n[E]xit\n[G]o back")
+                + "do today\n[W]ithdrawal\n[D]eposit\n[B]alance\n[G]o back")
             selection: str = input()
-            if selection not in "WDBEG" or len(selection) != 1:
+            if selection not in "WDBG" or len(selection) != 1:
                 print("Wrong input please try again")
                 continue
             match selection:
                 case "G":
-                    self.account_Menu(account, bank)
-                    break
-                case "E":
-                    self.save()
-                    exit()
+                    print()
+                    return
                 case "B":
+                    print()
                     print(f"You Have $%.2f In Your Account"%bank_account.show_balance())
                 case "D":
+                    print()
                     while True:
                         ammount: str = input("How Much Do You Want To Deposit\n")
                         if ammount.isdigit():
                             bank_account.deposit(float(ammount))
-                            FH.save_bank_account(bank_account,account.username,bank.name,self.data)
                             print("Thank You For The Deposit")
                             print(f"Your New Balance is $%.2f"%bank_account.show_balance())
                             break
                         else:    
-                            print("Please Only Input In Digits, Try Again")
+                            print("Please Only Input In Digits, Try Again\n")
                             continue
                 case "W":
+                    print()
                     while True:
                         ammount: str = input("How Much Do You Want To Withdrwal\n")
                         if ammount.isdigit():
@@ -204,12 +305,11 @@ class Menu:
                             if new_balance == -1:
                                 print(f"$%.2f Will Cause You To OverDraft,"%float(ammount)
                                     + f" You Only Have $%.2f"% bank_account.show_balance() 
-                                    + " Try Again!")
+                                    + " Try Again!\n")
                                 continue
                             else:
-                                FH.save_bank_account(bank_account,account.username,bank.name,self.data)
                                 print(f"Your New Balance is $%.2f"%new_balance)
                                 break
                         else:
-                            print("Please Only Input In Digits, Try Again")
+                            print("Please Only Input In Digits, Try Again\n")
                             continue

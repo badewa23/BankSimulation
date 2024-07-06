@@ -1,32 +1,69 @@
 {
    "Chase": {
-      "bob": [
-         {
+      "bob": {
+         "Info": {
             "Password": "123",
             "Name": "Kat Williams",
             "Age": 38
          },
-         {
-            "0": {
-               "Name": "Kat Williams",
-               "Ammount": 2000
-            }
+         "0": {
+            "Name": "Kat Williams",
+            "Ammount": 1000.0
+         },
+         "2": {
+            "Name": "Kat Williams",
+            "Ammount": 600.0
          }
-      ]
+      },
+      "tom": {
+         "Info": {
+            "Password": "123",
+            "Name": "Bob Saga",
+            "Age": 23
+         },
+         "1": {
+            "Name": "Bob Saga",
+            "Ammount": 1000.0
+         }
+      }
    },
    "Citigroup": {
-      "bob": [
-         {
+      "bob": {
+         "Info": {
             "Password": "123",
             "Name": "Oluwatobi Olukunle",
             "Age": 40
          },
-         {
-            "0": {
-               "Name": "Oluwatobi Olukunle",
-               "Ammount": 500.0
-            }
+         "0": {
+            "Name": "Oluwatobi Olukunle",
+            "Ammount": 500.0
          }
-      ]
+      },
+      "chase": {
+         "Info": {
+            "Password": "123",
+            "Name": "Tom Cat",
+            "Age": 19
+         },
+         "1": {
+            "Name": "Tom Cat",
+            "Ammount": 500.0
+         },
+         "2": {
+            "Name": "Tom Cat",
+            "Ammount": 200.0
+         }
+      },
+      "hun": {
+         "Info": {
+            "Password": "1234",
+            "Name": "Max Sharp",
+            "Age": 40
+         },
+         "3": {
+            "Name": "Max Sharp",
+            "Ammount": 230.0
+         }
+      }
    }
 }
