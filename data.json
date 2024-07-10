@@ -25,6 +25,17 @@
             "Name": "Bob Saga",
             "Ammount": 1000.0
          }
+      },
+      "hun": {
+         "Info": {
+            "Password": "123",
+            "Name": "Thomas Madision",
+            "Age": 19
+         },
+         "3": {
+            "Name": "Thomas Madision",
+            "Ammount": 200.0
+         }
       }
    },
    "Citigroup": {

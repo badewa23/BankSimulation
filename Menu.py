@@ -4,24 +4,53 @@ from Bank import Bank
 import FileHandler as FH
 
 class Menu:
-    def __init__(self, data: dict = FH.load_file()) :
-        self.data = data
-        self.banks = self.get_bank_record()
-    
-    def save(self) -> None:
-        FH.save_file(self.data)   
+    #Constructor
+    def __init__(self, file_name: str = "data.json"):
+        """ Create Menu object using an arguments with a default value
         
+            Parameters:
+            file_name (str): File path defalut is data.json
+            
+            Returns:"""
+        self.file_name: str = file_name
+        self.data: dict = FH.load_file(file_name)
+        self.banks: list = self.get_bank_record()
+    #Save dictionary to file
+    def save(self):
+        """ Save dictionary to file
+        
+            Parameters:
+            
+            Returns:"""
+        FH.save_file(self.data, self.file_name)   
+    #Get data from file and save as Bank object to a list    
     def get_bank_record(self) ->list:
+        """ Get data from file and save as Bank object to a list
+        
+            Parameters:
+            
+            Returns:
+            list: List of bank object"""
         banks: list = list()
         for bank_name in self.data:
             bank_record: dict = self.data[bank_name]
             banks.append(FH.create_bank(bank_record, bank_name))
         return banks
-    
-    def start_up(self) -> None:
-        self.banks_menu()
+    #Start the Menu
+    def start_up(self):
+        """ Start the Menu
         
-    def banks_menu(self) -> None:
+            Parameters:
+            
+            Returns:"""
+        self.banks_menu()
+    #Menu to access list of Bank object operation   
+    def banks_menu(self):
+        """ Menu to access list of Bank object operation
+        
+            Parameters:
+            
+            Returns:"""
         print(f"Welcome to Bank Simulation\n")
         banks: list = self.banks
         while True:
@@ -48,8 +77,14 @@ class Menu:
                     FH.save_banks(self.banks, self.data)
                     self.save()
                     exit()
-                
-    def bank_menu(self, bank: Bank) -> None:
+    #Menu to access Bank object operation        
+    def bank_menu(self, bank: Bank):
+        """ Menu to access Bank object operation
+        
+            Parameters:
+            bank (Bank): Bank object that is been accessed
+            
+            Returns:"""
         while True:
             print(f"Welcome To {bank.name} Bank")
             selection: str = input("[L]ogin\n[C]reate Account\n[E]xit\n[G]0 Back\n")
@@ -121,11 +156,19 @@ class Menu:
                             print()
                             self.account_Menu(account, bank)
                             break
+                        #Error Checking
                         else:
                             print("Mistake was made\n")
                             continue
-                    
-    def account_Menu(self, account: Account, bank: Bank) -> None:
+    #Menu to access Account object operation                
+    def account_Menu(self, account: Account, bank: Bank):
+        """ Menu to access Account object operation
+        
+            Parameters:
+            account (Account): Account object that is been accessed
+            bank (Bank): Bank object that holds the Account object
+            
+            Returns:"""
         while True:
             print(f"{account.username} Account:")
             selection: str = input("[G]o Back\n[B]ank Accounts\n[C]reate Bank Account\n[P]rofile\n[E]exit\n")
@@ -172,7 +215,7 @@ class Menu:
                                 choice: int = int(choice)
                                 if choice in range(len(bank_accounts)):
                                     print()
-                                    self.bank_account_holder_menu(bank_accounts[choice], account) 
+                                    self.bank_account_holder_menu(bank_accounts[choice]) 
                                     break                      
                                 else:
                                     print(f"{choice} Is Not Among The Choice, Try Again\n")
@@ -183,11 +226,19 @@ class Menu:
                     elif len(bank_accounts) == 1:
                         bank_account: BankAccount = bank_accounts[0]
                         print()
-                        self.bank_account_holder_menu(bank_account, account)
+                        self.bank_account_holder_menu(bank_account)
                     else:
                         print("You Don't Have A Bank Account, Please Create One\n")
-    
-    def profile_menu(self, account: Account, bank_name: str):
+    #Menu to change information of the Account Object
+    def profile_menu(self, account: Account, bank_name: str) -> None:
+        """ Menu to change information of the Account Objec
+        
+            Parameters:
+            account (Account): Account object that is been accessed
+            bank (str): Bank's name that has the Account object
+            
+            Returns:
+            None: Always return nothing"""
         while True:
             print(account)
             print()
@@ -226,9 +277,15 @@ class Menu:
                     FH.save_account(account,bank_name,self.data)
                     self.save()   
                     exit()
-    
+    #Menu to update name and age information of Account object
     def update_menu(self, account: Account):
-         while True:
+        """ Menu to update name and age information of Account object
+        
+            Parameters:
+            account (Account): Account object that is been accessed
+            
+            Returns:"""
+        while True:
             print("What Would You Like Change: ")
             selection: str = input("[N]ame\n[A]age\n[G]o Back\n")
             if selection not in "NAG" or len(selection) != 1:
@@ -263,13 +320,19 @@ class Menu:
                                 print("Must Input A Value Over 17\n")
                                 continue
                         else:
-                            print("Only Input In Digit")
+                            print("Only Input In Digit\n")
                             continue
                 case "G":
                     print()
                     return
-    
-    def bank_account_holder_menu(self, bank_account: BankAccount, account: Account) -> None:
+    #Menu to access the BankAccount object operation
+    def bank_account_holder_menu(self, bank_account: BankAccount):
+        """ Menu to access the BankAccount object operation
+        
+            Parameters:
+            bank_account (BankAccount): BankAccount object that is been accessed
+            
+            Returns:"""
         while True:
             print(f"Welcome {bank_account.account_holder_name} what would you like to "
                 + "do today\n[W]ithdrawal\n[D]eposit\n[B]alance\n[G]o back")
