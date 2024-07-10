@@ -18,11 +18,11 @@
       "tom": {
          "Info": {
             "Password": "123",
-            "Name": "Bob Saga",
+            "Name": "Bob Saget",
             "Age": 23
          },
          "1": {
-            "Name": "Bob Saga",
+            "Name": "Bob Saget",
             "Ammount": 1000.0
          }
       },
@@ -67,7 +67,7 @@
       },
       "hun": {
          "Info": {
-            "Password": "1234",
+            "Password": "123",
             "Name": "Max Sharp",
             "Age": 40
          },

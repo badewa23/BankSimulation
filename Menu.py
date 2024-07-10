@@ -60,18 +60,19 @@ class Menu:
                 print(f"{name} [{num}]")
             print("[E]xit")
             selection : str = input()
+            print()
             if selection.isdigit():
                 selection: int = int(selection)
                 if selection in range(len(banks)):
                     print()
                     self.bank_menu(banks[selection])
                 else:
-                    print(f"{selection} is not a choice")
+                    print(f"{selection} is not a choice\n")
                     print()
                     continue
             else:
                 if selection != "E":
-                    print("Wrong input please try again")
+                    print("Wrong input please try again\n")
                     print()
                 else:
                     FH.save_banks(self.banks, self.data)
@@ -97,7 +98,7 @@ class Menu:
                     print()
                     return
                 case "E":
-                    FH.save_bank(bank, self.data) 
+                    FH.save_banks(self.banks, self.data) 
                     self.save()  
                     exit()
                 case "L":
@@ -177,7 +178,7 @@ class Menu:
                 continue
             match selection:
                 case "E":
-                    FH.save_account(account,bank.name,self.data)
+                    FH.save_banks(self.banks, self.data)
                     self.save()   
                     exit()
                 case "G":
@@ -185,7 +186,7 @@ class Menu:
                     return
                 case "P":
                     print()
-                    self.profile_menu(account,bank.name)
+                    self.profile_menu(account)
                     continue
                 case "C":
                     print()
@@ -230,12 +231,11 @@ class Menu:
                     else:
                         print("You Don't Have A Bank Account, Please Create One\n")
     #Menu to change information of the Account Object
-    def profile_menu(self, account: Account, bank_name: str) -> None:
+    def profile_menu(self, account: Account) -> None:
         """ Menu to change information of the Account Objec
         
             Parameters:
             account (Account): Account object that is been accessed
-            bank (str): Bank's name that has the Account object
             
             Returns:
             None: Always return nothing"""
@@ -274,7 +274,7 @@ class Menu:
                     print()
                     return
                 case "E":
-                    FH.save_account(account,bank_name,self.data)
+                    FH.save_banks(self.banks, self.data)
                     self.save()   
                     exit()
     #Menu to update name and age information of Account object
@@ -335,12 +335,16 @@ class Menu:
             Returns:"""
         while True:
             print(f"Welcome {bank_account.account_holder_name} what would you like to "
-                + "do today\n[W]ithdrawal\n[D]eposit\n[B]alance\n[G]o back")
+                + "do today\n[W]ithdrawal\n[D]eposit\n[B]alance\n[G]o back\n[E]xit")
             selection: str = input()
-            if selection not in "WDBG" or len(selection) != 1:
+            if selection not in "WDBGE" or len(selection) != 1:
                 print("Wrong input please try again")
                 continue
             match selection:
+                case "E":
+                    FH.save_banks(self.banks, self.data)
+                    self.save()   
+                    exit()
                 case "G":
                     print()
                     return
